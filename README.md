@@ -43,9 +43,10 @@ So that I can maintain a healthy hydration level and improve my well-being
 
 - Handle errors and edge cases (e.g., invalid input, database connection failures)
 
-## Bonus Task
+## Bonus Tasks
 
 - implement a sleep tracker
+- create a simple game catching water drops
 
 ## Development
 
