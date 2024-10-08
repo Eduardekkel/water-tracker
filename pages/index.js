@@ -1,22 +1,23 @@
-import { getSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
-export default function ProtectedPage() {
-  return <div>Welcome to the protected page!</div>;
-}
+export default function Dashboard() {
+  const { data: session, status } = useSession();
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/signin", // Leite Benutzer zur Anmeldeseite weiter, wenn nicht authentifiziert
-        permanent: false,
-      },
-    };
+  if (status === "loading") {
+    return <div>Loading...</div>;
   }
 
-  return {
-    props: { session },
-  };
+  if (status === "unauthenticated") {
+    return <div>Please log in to access the dashboard.</div>;
+  }
+
+  return (
+    <div>
+      <h1>Welcome, {session.user.name}</h1>
+      <p>You are signed in with {session.user.email}</p>
+      <button onClick={() => signOut({ callbackUrl: "/auth/signin" })}>
+        Logout
+      </button>
+    </div>
+  );
 }
