@@ -1,23 +1,26 @@
-import { useSession, signOut } from "next-auth/react";
+// pages/dashboard.js
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/signin");
+    }
+  }, [status, router]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (status === "unauthenticated") {
-    return <div>Please log in to access the dashboard.</div>;
-  }
-
   return (
     <div>
-      <h1>Welcome, {session.user.name}</h1>
-      <p>You are signed in with {session.user.email}</p>
-      <button onClick={() => signOut({ callbackUrl: "/auth/signin" })}>
-        Logout
-      </button>
+      <h1>Dashboard</h1>
+      <p>Welcome, {session?.user?.name}</p>
     </div>
   );
 }

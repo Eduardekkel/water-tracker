@@ -7,13 +7,17 @@ export default function SignIn({ providers }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (session) {
+    if (status === "authenticated") {
       router.push("/");
     }
-  }, [session]);
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   if (!providers) {
-    return <div>Loading...</div>;
+    return <div>Loading providers...</div>;
   }
 
   return (
