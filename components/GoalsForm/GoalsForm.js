@@ -12,7 +12,7 @@ export default function GoalsForm({ setGoal, currentGoal }) {
     <form onSubmit={handleSubmit}>
       <input
         type="number"
-        value={newGoal}
+        value={newGoal || ""}
         onChange={(e) => setNewGoal(e.target.value)}
         placeholder="Set daily water goal in ml"
       />

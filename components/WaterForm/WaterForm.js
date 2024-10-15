@@ -1,28 +1,39 @@
-import { useState } from "react";
+// components/WaterForm/WaterForm.js
 
 export default function WaterForm({ addWaterIntake }) {
-  const [waterAmount, setWaterAmount] = useState("");
+  const predefinedAmounts = [200, 500, 750, 1000]; // Hier kannst du die vorgefertigten Mengen anpassen
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (waterAmount > 0) {
-      console.log("Adding water entry:", waterAmount); // Log der Menge
-      addWaterIntake(Number(waterAmount)); // Stelle sicher, dass die Menge als Zahl übergeben wird
-      setWaterAmount("");
-    } else {
-      alert("Enter a valid amount");
-    }
+  const handlePredefinedClick = (amount) => {
+    addWaterIntake(amount);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="number"
-        value={waterAmount}
-        onChange={(e) => setWaterAmount(e.target.value)}
-        placeholder="Water amount in ml"
-      />
-      <button type="submit">Add amount</button>
-    </form>
+    <div>
+      <h2>Log your water intake</h2>
+
+      {/* Predefined buttons for water amounts */}
+      <div>
+        <h4>Choose a predefined amount:</h4>
+        {predefinedAmounts.map((amount) => (
+          <button key={amount} onClick={() => handlePredefinedClick(amount)}>
+            {amount} ml
+          </button>
+        ))}
+      </div>
+
+      {/* If the user still wants to input manually */}
+      <div>
+        <h4>Or enter a custom amount:</h4>
+        <input
+          type="number"
+          placeholder="Enter amount in ml"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              addWaterIntake(Number(e.target.value));
+            }
+          }}
+        />
+      </div>
+    </div>
   );
 }
