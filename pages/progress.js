@@ -42,7 +42,6 @@ export default function ProgressPage() {
 
   return (
     <div>
-      <h1>Your last entries</h1>
       <WaterIntakeChart waterEntries={waterEntries} />
     </div>
   );

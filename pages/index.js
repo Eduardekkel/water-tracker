@@ -3,6 +3,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import GoalsForm from "@/components/GoalsForm/GoalsForm";
 import WaterForm from "@/components/WaterForm/WaterForm";
+import {
+  Container,
+  Header,
+  BottleContainer,
+  WaterLevel,
+  ProgressText,
+  Button,
+} from "@/components/Dashboard";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -54,11 +62,12 @@ export default function Dashboard() {
   }, [status]);
 
   const totalWater = waterEntries.reduce((sum, entry) => sum + entry.amount, 0);
-  const progressPercentage = Math.min((totalWater / goal) * 100, 100);
+  const progressPercentage = Math.min(
+    Math.max((totalWater / goal) * 100, 0),
+    100
+  );
 
-  async function updateGoal(newGoal) {
-    // ... (deine bestehende updateGoal-Funktion bleibt unverändert)
-  }
+  async function updateGoal(newGoal) {}
 
   const addWaterIntake = async (amount) => {
     try {
@@ -143,21 +152,24 @@ export default function Dashboard() {
   };
 
   return (
-    <div>
-      <h1>Welcome {session?.user?.name || "User"}!</h1>
-      <GoalsForm setGoal={updateGoal} currentGoal={goal} />
-      <WaterForm addWaterIntake={addWaterIntake} />
-      <div>
+    <Container>
+      <Header>Welcome {session?.user?.name || "User"}!</Header>
+
+      <BottleContainer>
+        <WaterLevel percentage={progressPercentage} />
+      </BottleContainer>
+      <ProgressText>
         <h2>Daily Goal: {goal} ml</h2>
-        <h3>TotalWater: {totalWater} ml</h3>
+        <h3>Total Water: {totalWater} ml</h3>
         <h4>Progress: {progressPercentage.toFixed(2)}%</h4>
         {progressPercentage < 100 && (
           <p>You have {goal - totalWater} ml left to reach your goal</p>
         )}
         {progressPercentage >= 100 && <p>Goal reached! Good job!</p>}
-      </div>
-
-      <button onClick={deleteLastWaterIntake}>Letzten Eintrag löschen</button>
-    </div>
+      </ProgressText>
+      <GoalsForm setGoal={updateGoal} currentGoal={goal} />
+      <WaterForm addWaterIntake={addWaterIntake} />
+      <Button onClick={deleteLastWaterIntake}>Delete last entry</Button>
+    </Container>
   );
 }

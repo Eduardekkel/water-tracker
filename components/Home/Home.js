@@ -56,7 +56,7 @@ export default function Home({ providers }) {
     <Container>
       <Header>Water Tracker</Header>
       <Card>
-        <h2>Stay Hydrated, stay fresh</h2>
+        <h2>Stay Hydrated, stay fresh!</h2>
         <p>Track your water intake with ease and your body will thank you. </p>
 
         {Object.values(providers).map((provider) => (
