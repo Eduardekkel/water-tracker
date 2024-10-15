@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-export default function WaterForm({ addWaterEntry }) {
+export default function WaterForm({ addWaterIntake }) {
   const [waterAmount, setWaterAmount] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (waterAmount > 0) {
-      addWaterEntry(waterAmount);
+      console.log("Adding water entry:", waterAmount); // Log der Menge
+      addWaterIntake(Number(waterAmount)); // Stelle sicher, dass die Menge als Zahl übergeben wird
       setWaterAmount("");
     } else {
-      alert("Bitte gib eine gültige Menge ein.");
+      alert("Enter a valid amount");
     }
   };
 
@@ -19,9 +20,9 @@ export default function WaterForm({ addWaterEntry }) {
         type="number"
         value={waterAmount}
         onChange={(e) => setWaterAmount(e.target.value)}
-        placeholder="Wassermenge in ml"
+        placeholder="Water amount in ml"
       />
-      <button type="submit">Wasser hinzufügen</button>
+      <button type="submit">Add amount</button>
     </form>
   );
 }
