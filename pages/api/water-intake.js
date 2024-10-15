@@ -1,8 +1,6 @@
 // pages/api/water-intake.js
-import { getSession } from "next-auth/react";
-import clientPromise from "@/lib/connect";
-
 import { getToken } from "next-auth/jwt";
+import clientPromise from "@/lib/connect";
 
 export default async function handler(req, res) {
   const token = await getToken({ req });
@@ -22,14 +20,98 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Amount is required" });
     }
 
+    // Hier prüfen, ob es ein neuer Tag ist
+    const lastEntry = await collection.findOne(
+      { userId: token.sub },
+      { sort: { date: -1 } }
+    );
+    const today = new Date();
+    const lastEntryDate = new Date(lastEntry?.date);
+
+    // Überprüfen, ob das Datum des letzten Eintrags von heute abweicht
+    if (
+      !lastEntry ||
+      lastEntryDate.getDate() !== today.getDate() ||
+      lastEntryDate.getMonth() !== today.getMonth() ||
+      lastEntryDate.getFullYear() !== today.getFullYear()
+    ) {
+      // Falls ja, alle Einträge zurücksetzen
+      await collection.deleteMany({ userId: token.sub });
+    }
+
     const entry = {
-      userId: token.sub, // Verwende die User-ID aus dem JWT-Token
-      amount: parseFloat(amount), // Um sicherzustellen, dass es eine Zahl ist
+      userId: token.sub,
+      amount: parseFloat(amount),
       date: new Date(),
     };
 
     await collection.insertOne(entry);
     return res.status(201).json({ message: "Entry added", entry });
+  }
+
+  // Füge diese Methode zur Handler-Funktion hinzu
+  if (req.method === "GET" && req.url.endsWith("/last-entry")) {
+    const lastEntry = await collection.findOne(
+      { userId: token.sub },
+      { sort: { date: -1 } }
+    ); // Neuesten Eintrag abrufen
+    return res.status(200).json({ lastEntry });
+  }
+
+  if (req.method === "POST") {
+    const { amount } = req.body;
+
+    if (!amount) {
+      return res.status(400).json({ message: "Amount is required" });
+    }
+
+    // Hier prüfen, ob es ein neuer Tag ist
+    const lastEntry = await collection.findOne(
+      { userId: token.sub },
+      { sort: { date: -1 } }
+    );
+    const today = new Date();
+    const lastEntryDate = new Date(lastEntry?.date);
+
+    // Überprüfen, ob das Datum des letzten Eintrags von heute abweicht
+    if (
+      !lastEntry ||
+      lastEntryDate.getDate() !== today.getDate() ||
+      lastEntryDate.getMonth() !== today.getMonth() ||
+      lastEntryDate.getFullYear() !== today.getFullYear()
+    ) {
+      // Falls ja, alle Einträge zurücksetzen
+      await collection.deleteMany({ userId: token.sub });
+    }
+
+    const entry = {
+      userId: token.sub,
+      amount: parseFloat(amount),
+      date: new Date(),
+    };
+
+    await collection.insertOne(entry);
+    return res.status(201).json({ message: "Entry added", entry });
+  }
+
+  if (req.method === "DELETE") {
+    const { amount } = req.body;
+
+    if (!amount) {
+      return res.status(400).json({ message: "Amount is required" });
+    }
+
+    const result = await collection.deleteOne({
+      userId: token.sub,
+      amount: parseFloat(amount),
+      date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) },
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "No entry found to delete" });
+    }
+
+    return res.status(200).json({ message: "Entry deleted" });
   }
 
   if (req.method === "GET") {

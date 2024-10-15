@@ -1,53 +1,69 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
-import {
-  Chart,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-} from "chart.js";
+// components/WaterIntakeChart.js
+import { useEffect, useRef } from "react";
+import { Chart, registerables } from "chart.js";
 
-Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title);
+Chart.register(...registerables);
 
-const WaterIntakeChart = ({ waterData }) => {
-  const labels = waterData.map((entry) => entry.date);
-  const dataPoints = waterData.map((entry) => entry.amount);
+function WaterIntakeChart({ waterEntries }) {
+  const chartRef = useRef(null);
 
-  const chartData = {
-    labels: labels,
-    datasets: [
-      {
-        label: "Tägliche Wasseraufnahme (ml)",
-        data: dataPoints,
-        fill: false,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
+  useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+
+    const labels = [];
+    const data = [];
+
+    const currentDate = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(currentDate);
+      date.setDate(currentDate.getDate() - i);
+      const label = date.toLocaleDateString();
+
+      labels.push(label);
+      const dailyTotal = waterEntries
+        .filter((entry) => new Date(entry.date).toLocaleDateString() === label)
+        .reduce((sum, entry) => sum + entry.amount, 0);
+      data.push(dailyTotal);
+    }
+
+    const ctx = document.getElementById("waterIntakeChart").getContext("2d");
+    chartRef.current = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels.reverse(),
+        datasets: [
+          {
+            label: "Water intake (ml)",
+            data: data.reverse(),
+            borderColor: "rgba(75, 192, 192, 1)",
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            fill: true,
+          },
+        ],
       },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: "Wasseraufnahme (ml)",
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "top",
+          },
+          title: {
+            display: true,
+            text: "Water intake over the last 7 days",
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
         },
       },
-      x: {
-        title: {
-          display: true,
-          text: "Datum",
-        },
-      },
-    },
-  };
+    });
+  }, [waterEntries]);
 
-  return <Line data={chartData} options={options} />;
-};
+  return <canvas id="waterIntakeChart" width="400" height="200"></canvas>;
+}
 
 export default WaterIntakeChart;

@@ -1,6 +1,10 @@
-import { getProviders, signIn, useSession } from "next-auth/react";
+// pages/auth/signin.js
+
+import { getProviders, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import SignInForm from "@/components/SignInForm/SignInForm";
+import Home from "@/components/Home/Home";
 
 export default function SignIn({ providers }) {
   const { data: session, status } = useSession();
@@ -20,18 +24,7 @@ export default function SignIn({ providers }) {
     return <div>Loading providers...</div>;
   }
 
-  return (
-    <div>
-      <h1>Sign in to Water Tracker</h1>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button onClick={() => signIn(provider.id, { callbackUrl: "/" })}>
-            Sign in with {provider.name}
-          </button>
-        </div>
-      ))}
-    </div>
-  );
+  return <Home providers={providers} />; // Verwende die SignInForm-Komponente
 }
 
 export async function getServerSideProps() {

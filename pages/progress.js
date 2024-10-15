@@ -1,41 +1,49 @@
 // pages/progress.js
-import React, { useEffect, useState } from "react";
-import WaterIntakeChart from "@/components/WaterIntakeChart/WaterIntakeChart";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import WaterIntakeChart from "@/components/WaterIntakeChart/WaterIntakeChart";
 
-const Progress = () => {
+export default function ProgressPage() {
   const { data: session, status } = useSession();
-  const [waterData, setWaterData] = useState([]);
+  const [waterEntries, setWaterEntries] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchWaterData = async () => {
+    if (status === "unauthenticated") {
+      // Umleitung zur Anmeldeseite, wenn nicht authentifiziert
+      window.location.href = "/auth/signin";
+    }
+  }, [status]);
+
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/water-intake"); // Hier anpassen, falls nötig
-        const data = await res.json();
-        setWaterData(data.entries); // Setze die Wasseraufnahme-Daten
+        const response = await fetch("/api/water-intake");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setWaterEntries(data.entries || []);
       } catch (error) {
-        console.error("Error fetching water data:", error);
+        console.error("Error fetching water entries:", error);
       } finally {
         setLoading(false);
       }
     };
 
     if (status === "authenticated") {
-      fetchWaterData();
+      fetchData();
     }
   }, [status]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <p>Loading...</p>;
   }
 
   return (
     <div>
-      <h1>Fortschritt</h1>
-      <WaterIntakeChart waterData={waterData} />
+      <h1>Your last entries</h1>
+      <WaterIntakeChart waterEntries={waterEntries} />
     </div>
   );
-};
-
-export default Progress;
+}
