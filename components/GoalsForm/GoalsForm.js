@@ -1,15 +1,13 @@
-// components/GoalsForm/GoalsForm.js
-
 import { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  background-color: #2c2c2c; /* Dunkler Hintergrund */
-  border-radius: 10px; /* Abgerundete Ecken */
+  background-color: #2c2c2c;
+  border-radius: 10px;
   padding: 20px;
-  margin: 20px 0; /* Abstand oben und unten */
-  color: white; /* Textfarbe */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Schatten für Tiefe */
+  margin: 20px 0;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 `;
 
 const Title = styled.h2`
@@ -21,12 +19,12 @@ const Input = styled.input`
   padding: 10px;
   border: none;
   border-radius: 5px;
-  flex: 1; /* Nimmt den verfügbaren Platz ein */
-  margin-right: 10px; /* Abstand zwischen Eingabe und Button */
+  flex: 1;
+  margin-right: 10px;
 `;
 
 const UpdateButton = styled.button`
-  background-color: #0070f3; /* Button-Hintergrundfarbe */
+  background-color: #0070f3;
   color: white;
   border: none;
   border-radius: 5px;
@@ -35,13 +33,13 @@ const UpdateButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #005bb5; /* Button-Farbe beim Hover */
+    background-color: #005bb5;
   }
 `;
 
 const FormContainer = styled.form`
-  display: flex; /* Flexbox für die Eingabe und den Button */
-  align-items: center; /* Vertikale Ausrichtung */
+  display: flex;
+  align-items: center;
 `;
 
 export default function GoalsForm({ setGoal, currentGoal }) {
@@ -49,7 +47,7 @@ export default function GoalsForm({ setGoal, currentGoal }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setGoal(newGoal); // Goal aktualisieren
+    setGoal(newGoal);
   };
 
   return (

@@ -1,5 +1,4 @@
 import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
 
 import styled from "styled-components";
 
@@ -27,7 +26,7 @@ export const NavLink = styled.a`
   position: relative;
 
   &:hover {
-    color: #00bfff; /* Change color on hover */
+    color: #00bfff;
   }
 
   &::after {
@@ -35,15 +34,15 @@ export const NavLink = styled.a`
     display: block;
     width: 0;
     height: 2px;
-    background: #00bfff; /* Color of the underline */
+    background: #00bfff;
     transition: width 0.3s;
     position: absolute;
     left: 0;
-    bottom: -5px; /* Position of the underline */
+    bottom: -5px;
   }
 
   &:hover::after {
-    width: 100%; /* Full underline on hover */
+    width: 100%;
   }
 `;
 

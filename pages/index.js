@@ -19,7 +19,7 @@ export default function Dashboard() {
   const [goal, setGoal] = useState();
   const [waterEntries, setWaterEntries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [lastEntry, setLastEntry] = useState(null); // State für den letzten Eintrag
+  const [lastEntry, setLastEntry] = useState(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -45,7 +45,7 @@ export default function Dashboard() {
         if (goalData.entry) {
           setGoal(goalData.entry.goal);
         } else {
-          setGoal(2000); // Standardziel, wenn kein Ziel gesetzt ist
+          setGoal(2000);
         }
 
         setWaterEntries(waterData.entries || []);
@@ -86,7 +86,6 @@ export default function Dashboard() {
           date: new Date(),
         };
 
-        // Speichere den zuletzt hinzugefügten Eintrag
         setLastEntry(newEntry);
 
         const updatedEntries = await fetch("/api/water-intake");
@@ -110,7 +109,7 @@ export default function Dashboard() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Goal updated:", result);
+
         setGoal(newGoal);
       } else {
         const errorData = await response.json();
@@ -133,14 +132,14 @@ export default function Dashboard() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: lastEntry.amount }), // Lösche den letzten Eintrag mit der Menge
+        body: JSON.stringify({ amount: lastEntry.amount }),
       });
 
       if (response.ok) {
         const updatedEntries = await fetch("/api/water-intake");
         const data = await updatedEntries.json();
         setWaterEntries(data.entries);
-        setLastEntry(null); // Setze lastEntry zurück, da es gelöscht wurde
+        setLastEntry(null);
         alert("Letzten Eintrag erfolgreich gelöscht!");
       } else {
         const data = await response.json();

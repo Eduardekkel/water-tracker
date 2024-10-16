@@ -1,5 +1,3 @@
-// components/Home/Home.js
-
 import styled from "styled-components";
 import { signIn } from "next-auth/react";
 
@@ -7,7 +5,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #1a1a1a; /* Dunkler Hintergrund */
+  background-color: #1a1a1a;
   color: white;
   min-height: 100vh;
   padding: 20px;

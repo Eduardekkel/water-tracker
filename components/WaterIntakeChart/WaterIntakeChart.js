@@ -1,4 +1,3 @@
-// components/WaterIntakeChart.js
 import { useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
 import styled from "styled-components";
@@ -57,15 +56,15 @@ function WaterIntakeChart({ waterEntries }) {
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // Verhindert, dass das Diagramm das Seitenverhältnis beibehält
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: "top",
             labels: {
               font: {
-                size: 14, // Schriftgröße für die Legende
+                size: 14,
                 family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-                color: "#fff", // Weiße Schrift für die Legende
+                color: "#fff",
               },
             },
           },
@@ -73,14 +72,14 @@ function WaterIntakeChart({ waterEntries }) {
             display: true,
             text: "Water Intake Over the Last 7 Days",
             font: {
-              size: 18, // Schriftgröße für den Titel
+              size: 18,
               weight: "bold",
               family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-              color: "#fff", // Weiße Schrift für den Titel
+              color: "#fff",
             },
           },
           tooltip: {
-            backgroundColor: "rgba(0, 0, 0, 0.8)", // Dunkler Hintergrund für Tooltips
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
             titleColor: "#fff",
             bodyColor: "#fff",
             borderColor: "#fff",
@@ -93,24 +92,24 @@ function WaterIntakeChart({ waterEntries }) {
           y: {
             beginAtZero: true,
             ticks: {
-              color: "#fff", // Weiße Farbe für die y-Achsenbeschriftungen
+              color: "#fff",
               font: {
-                size: 14, // Schriftgröße für die y-Achsenbeschriftungen
+                size: 14,
               },
             },
             grid: {
-              color: "rgba(255, 255, 255, 0.1)", // Helle Gitterlinien
+              color: "rgba(255, 255, 255, 0.1)",
             },
           },
           x: {
             ticks: {
-              color: "#fff", // Weiße Farbe für die x-Achsenbeschriftungen
+              color: "#fff",
               font: {
-                size: 14, // Schriftgröße für die x-Achsenbeschriftungen
+                size: 14,
               },
             },
             grid: {
-              color: "rgba(255, 255, 255, 0.1)", // Helle Gitterlinien
+              color: "rgba(255, 255, 255, 0.1)",
             },
           },
         },

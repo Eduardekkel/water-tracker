@@ -1,4 +1,3 @@
-// pages/api/water-intake.js
 import { getToken } from "next-auth/jwt";
 import clientPromise from "@/lib/connect";
 
@@ -19,8 +18,6 @@ export default async function handler(req, res) {
     if (!amount) {
       return res.status(400).json({ message: "Amount is required" });
     }
-
-    // Hier prüfen, ob es ein neuer Tag ist
     const lastEntry = await collection.findOne(
       { userId: token.sub },
       { sort: { date: -1 } }
@@ -28,14 +25,12 @@ export default async function handler(req, res) {
     const today = new Date();
     const lastEntryDate = new Date(lastEntry?.date);
 
-    // Überprüfen, ob das Datum des letzten Eintrags von heute abweicht
     if (
       !lastEntry ||
       lastEntryDate.getDate() !== today.getDate() ||
       lastEntryDate.getMonth() !== today.getMonth() ||
       lastEntryDate.getFullYear() !== today.getFullYear()
     ) {
-      // Falls ja, alle Einträge zurücksetzen
       await collection.deleteMany({ userId: token.sub });
     }
 
@@ -49,12 +44,11 @@ export default async function handler(req, res) {
     return res.status(201).json({ message: "Entry added", entry });
   }
 
-  // Füge diese Methode zur Handler-Funktion hinzu
   if (req.method === "GET" && req.url.endsWith("/last-entry")) {
     const lastEntry = await collection.findOne(
       { userId: token.sub },
       { sort: { date: -1 } }
-    ); // Neuesten Eintrag abrufen
+    );
     return res.status(200).json({ lastEntry });
   }
 
@@ -65,7 +59,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Amount is required" });
     }
 
-    // Hier prüfen, ob es ein neuer Tag ist
     const lastEntry = await collection.findOne(
       { userId: token.sub },
       { sort: { date: -1 } }
@@ -73,14 +66,12 @@ export default async function handler(req, res) {
     const today = new Date();
     const lastEntryDate = new Date(lastEntry?.date);
 
-    // Überprüfen, ob das Datum des letzten Eintrags von heute abweicht
     if (
       !lastEntry ||
       lastEntryDate.getDate() !== today.getDate() ||
       lastEntryDate.getMonth() !== today.getMonth() ||
       lastEntryDate.getFullYear() !== today.getFullYear()
     ) {
-      // Falls ja, alle Einträge zurücksetzen
       await collection.deleteMany({ userId: token.sub });
     }
 

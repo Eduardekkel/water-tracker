@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { useSession, signOut, signIn } from "next-auth/react"; // Importiere signIn hier
-import Link from "next/link";
+import { useSession, signOut, signIn } from "next-auth/react";
 
 const HeaderContainer = styled.header`
   padding: 1rem;
-  background-color: #1a1a1a; /* Dunkler Hintergrund */
+  background-color: #1a1a1a;
 `;
 
 const Nav = styled.nav`

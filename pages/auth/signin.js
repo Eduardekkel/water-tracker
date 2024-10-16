@@ -1,9 +1,6 @@
-// pages/auth/signin.js
-
 import { getProviders, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import SignInForm from "@/components/SignInForm/SignInForm";
 import Home from "@/components/Home/Home";
 
 export default function SignIn({ providers }) {
@@ -24,7 +21,7 @@ export default function SignIn({ providers }) {
     return <div>Loading providers...</div>;
   }
 
-  return <Home providers={providers} />; // Verwende die SignInForm-Komponente
+  return <Home providers={providers} />;
 }
 
 export async function getServerSideProps() {

@@ -1,5 +1,3 @@
-// components/SignInForm/SignInForm.js
-
 import styled from "styled-components";
 import { signIn } from "next-auth/react";
 
@@ -8,8 +6,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Full height for centering */
-  background-color: #f0f4f8; /* Light background color */
+  height: 100vh;
+  background-color: #f0f4f8;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -17,7 +15,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   margin-bottom: 20px;
-  color: #333; /* Darker text color */
+  color: #333;
 `;
 
 const ProviderButton = styled.div`
@@ -25,7 +23,7 @@ const ProviderButton = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: #0070f3; /* Blue button color */
+  background-color: #0070f3;
   color: white;
   border: none;
   border-radius: 5px;
@@ -34,7 +32,7 @@ const Button = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #005bb5; /* Darker blue on hover */
+    background-color: #005bb5;
   }
 `;
 

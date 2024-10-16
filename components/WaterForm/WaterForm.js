@@ -1,5 +1,3 @@
-// components/WaterForm/WaterForm.js
-
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -72,7 +70,7 @@ export default function WaterForm({ addWaterIntake }) {
     const amount = parseFloat(customAmount);
     if (!isNaN(amount) && amount > 0) {
       addWaterIntake(amount);
-      setCustomAmount(""); // Setze das Eingabefeld zurück
+      setCustomAmount("");
     } else {
       alert("Bitte geben Sie einen gültigen Betrag ein.");
     }
@@ -100,10 +98,10 @@ export default function WaterForm({ addWaterIntake }) {
             type="number"
             placeholder="Enter amount in ml"
             value={customAmount}
-            onChange={(e) => setCustomAmount(e.target.value)} // Update state on change
+            onChange={(e) => setCustomAmount(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleCustomAmountSubmit(); // Submit on Enter key
+                handleCustomAmountSubmit();
               }
             }}
           />

@@ -1,4 +1,3 @@
-// pages/progress.js
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import WaterIntakeChart from "@/components/WaterIntakeChart/WaterIntakeChart";
@@ -10,7 +9,6 @@ export default function ProgressPage() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      // Umleitung zur Anmeldeseite, wenn nicht authentifiziert
       window.location.href = "/auth/signin";
     }
   }, [status]);
